@@ -5,24 +5,27 @@ const main = async () => {
   const server = new WebSocket.Server({ port: 8383 });
 
   server.on("listening", () => {
-    console.log(`WebSocket server is listening on port ${server.options.port}`);
+    console.log(
+      `🚀 WebSocket server is listening on port ${server.options.port}`
+    );
   });
 
   server.on("connection", (socket) => {
-    console.log("Client connected");
+    console.log("🚀 Client connected");
 
     socket.on("message", async (message) => {
       // wait 4 seconds
       await new Promise((resolve) => setTimeout(resolve, 4000));
 
       // log the raw
-      console.log("Received Kiosk message:");
+      console.log("🚀🚀 Received Kiosk message:");
       console.log(message);
 
       // log message data
       const messageData = JSON.parse(message);
-      console.log("Kiosk message parsed:");
+      console.log("🚀🚀 Kiosk message parsed:");
       console.log(messageData);
+      console.log(JSON.stringify(messageData));
 
       // call init VNPay POS transaction
       // receive response from VNPay POS
@@ -48,7 +51,7 @@ const main = async () => {
           "f9aa7ff7e0c71a983193394622f9f6140302206a86caedfe290de6a0fbbaaed9",
       };
 
-      const responseData = JSON.stringify({
+      const responseData = {
         ResponseType: 1,
         Response: {
           ResponseAmount: `${VNPayResponse.amount}.00`,
@@ -73,17 +76,19 @@ const main = async () => {
           HolderName: "Stephen",
         },
         Errors: null,
-      });
+      };
 
-      console.log("Response to Kiosk:");
+      console.log("🚀🚀 Response to Kiosk:");
       console.log(responseData);
+      console.log("🚀🚀 Response to Kiosk raw:");
+      console.log(JSON.stringify(responseData));
 
       // Emit a message back to the client
-      socket.send(responseData);
+      socket.send(JSON.stringify(responseData));
     });
 
     socket.on("close", () => {
-      console.log("Client disconnected");
+      console.log("🚀 Client disconnected");
     });
   });
 };
